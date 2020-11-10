@@ -325,7 +325,7 @@ namespace ConsoleApp10
             helper.Add(help);
             mover.Release();
             Random r = new Random();
-            Thread.Sleep(r.Next(10000, 17000));
+            Thread.Sleep(r.Next(40000, 45000));
             freest[temporal.Assignedstation] = true;
             cars[savepos - 1] = new Car(help.X, help.Y);
             cars[savepos - 1].SpawnPos = savepos;
