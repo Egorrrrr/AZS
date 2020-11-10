@@ -133,6 +133,8 @@ namespace ConsoleApp10
         static Semaphore mover = new Semaphore(1, 1);
         public GasStation()
         {
+            st.DrawStation();
+
             SpawnCars();
             for (int i = 0; i < freest.Length; i++)
             {
@@ -168,7 +170,8 @@ namespace ConsoleApp10
             Console.SetCursorPosition(0, 0);
             Console.Clear();
             st.DrawStation();
-            foreach (var item in cars)
+            
+            foreach (var item in cars.ToList())
             {
                 item.Draw();
                 if (item.cart == null)
@@ -177,7 +180,7 @@ namespace ConsoleApp10
                     item.cart.Start(item);
                 }
             }
-            foreach (var item in helper)
+            foreach (var item in helper.ToList())
             {
                 item.Draw();
             }
@@ -188,7 +191,7 @@ namespace ConsoleApp10
         /// <param name="car"></param>
         void Fill(object car)
         {
-            int delay = 3;
+            int delay = 10;
             Car temporal = car as Car;
             //Console.ReadLine();
             mover.WaitOne();
