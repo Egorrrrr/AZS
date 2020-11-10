@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp10
 {
+    /// <summary>
+    /// рисует заправку
+    /// </summary>
     class Station
     {
         public void DrawStation()
@@ -40,6 +43,9 @@ namespace ConsoleApp10
 
         }
     }
+    /// <summary>
+    ///Класс машина. Он ее рисует и описывает, как ее рисовать и куда она едет
+    /// </summary>
     class Car
     {
         public Thread cart { get; set; }
@@ -133,6 +139,9 @@ namespace ConsoleApp10
                 freest[i] = true;
             }
         }
+        /// <summary>
+        /// начальное создание машин
+        /// </summary>
         void SpawnCars()
         {
             int j = 0;
@@ -151,6 +160,9 @@ namespace ConsoleApp10
             Update();
         }
         List<Car> helper = new List<Car>();
+        /// <summary>
+        /// обновляет графику
+        /// </summary>
         void Update()
         {
             Console.SetCursorPosition(0, 0);
@@ -170,6 +182,10 @@ namespace ConsoleApp10
                 item.Draw();
             }
         }
+        /// <summary>
+        /// Общий ресурс с семиформаии
+        /// </summary>
+        /// <param name="car"></param>
         void Fill(object car)
         {
             int delay = 3;
@@ -177,6 +193,7 @@ namespace ConsoleApp10
             //Console.ReadLine();
             mover.WaitOne();
             sem.WaitOne();
+            ///маршурт от точки появления
             for (int i = 0; i < 7; i++)
             {
                 temporal.Y -= 1;
@@ -212,7 +229,7 @@ namespace ConsoleApp10
             }
             
 
-
+            ///вариации маршрута взависимость это направльния
             switch (temporal.Assignedstation)
             {
                 case 0:
