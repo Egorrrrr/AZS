@@ -191,7 +191,7 @@ namespace ConsoleApp10
         /// <param name="car"></param>
         void Fill(object car)
         {
-            int delay = 10;
+            int delay = 25;
             Car temporal = car as Car;
             //Console.ReadLine();
             mover.WaitOne();
@@ -345,7 +345,7 @@ namespace ConsoleApp10
             helper.Add(help);
             mover.Release();
             Random r = new Random();
-            Thread.Sleep(r.Next(40000, 45000));
+            Thread.Sleep(r.Next(30000, 38000));
             freest[temporal.Assignedstation] = true;
             cars[savepos - 1] = new Car(help.X, help.Y);
             cars[savepos - 1].SpawnPos = savepos;
@@ -376,6 +376,7 @@ namespace ConsoleApp10
             //    Console.WriteLine(item);
             //}
             //Console.ReadLine();
+            Console.BufferHeight = 100;
             GasStation mnn = new GasStation();
             Console.WriteLine();
             Console.CursorVisible = false;
