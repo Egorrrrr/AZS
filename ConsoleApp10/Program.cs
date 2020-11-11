@@ -377,6 +377,8 @@ namespace ConsoleApp10
             //}
             //Console.ReadLine();
             Console.BufferHeight = 100;
+            Console.SetWindowSize(120, 42);
+            
             GasStation mnn = new GasStation();
             Console.WriteLine();
             Console.CursorVisible = false;
