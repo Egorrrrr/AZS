@@ -131,6 +131,7 @@ namespace ConsoleApp10
         int freestations = 4;
         static Semaphore sem = new Semaphore(4,4);
         static Semaphore mover = new Semaphore(1, 1);
+        Thread UpdateThread;
         public GasStation()
         {
             st.DrawStation();
@@ -140,6 +141,8 @@ namespace ConsoleApp10
             {
                 freest[i] = true;
             }
+            UpdateThread = new Thread(new ThreadStart(Update));
+            UpdateThread.Start();
         }
         /// <summary>
         /// начальное создание машин
@@ -159,7 +162,7 @@ namespace ConsoleApp10
                 
                 
             }
-            Update();
+          //  Update();
         }
         List<Car> helper = new List<Car>();
         /// <summary>
@@ -167,22 +170,26 @@ namespace ConsoleApp10
         /// </summary>
         void Update()
         {
-            Console.SetCursorPosition(0, 0);
-            Console.Clear();
-            st.DrawStation();
-            
-            foreach (var item in cars.ToList())
+            while (true)
             {
-                item.Draw();
-                if (item.cart == null)
+                Console.SetCursorPosition(0, 0);
+                Console.Clear();
+                st.DrawStation();
+
+                foreach (var item in cars.ToList())
                 {
-                    item.cart = new Thread(new ParameterizedThreadStart(Fill));
-                    item.cart.Start(item);
+                    item.Draw();
+                    if (item.cart == null)
+                    {
+                        item.cart = new Thread(new ParameterizedThreadStart(Fill));
+                        item.cart.Start(item);
+                    }
                 }
-            }
-            foreach (var item in helper.ToList())
-            {
-                item.Draw();
+                foreach (var item in helper.ToList())
+                {
+                    item.Draw();
+                }
+                System.Threading.Thread.Sleep(50);
             }
         }
         /// <summary>
@@ -191,7 +198,7 @@ namespace ConsoleApp10
         /// <param name="car"></param>
         void Fill(object car)
         {
-            int delay = 25;
+            int delay = 50;
             Car temporal = car as Car;
             //Console.ReadLine();
             mover.WaitOne();
@@ -200,7 +207,7 @@ namespace ConsoleApp10
             for (int i = 0; i < 7; i++)
             {
                 temporal.Y -= 1;
-                Update();
+                ////Update();
                 System.Threading.Thread.Sleep(delay);
             }
             temporal.Direction = 2;
@@ -209,7 +216,7 @@ namespace ConsoleApp10
             {
                 temporal.X -= 1;
                 System.Threading.Thread.Sleep(delay);
-                Update();
+               // //Update();
             }
             for (int i = 0; i < freest.Length; i++)
             {
@@ -223,25 +230,26 @@ namespace ConsoleApp10
             temporal.Direction = 1;
 
             System.Threading.Thread.Sleep(delay);
-            Update();
+            ////Update();
             for (int i = 0; i < 6; i++)
             {
                 temporal.Y -= 1;
-                Update();
+               // //Update();
                 System.Threading.Thread.Sleep(delay);
             }
-            
+
+            mover.Release();
 
             ///вариации маршрута взависимость это направльния
             switch (temporal.Assignedstation)
             {
                 case 0:
                     {
-                        Update();
+                        //Update();
                         for (int i = 0; i < 11; i++)
                         {
                             temporal.Y -= 1;
-                            Update();
+                            ////Update();
                             Thread.Sleep(delay);
 
                         }
@@ -250,12 +258,12 @@ namespace ConsoleApp10
                     }
                 case 1:
                     {
-                        Update();
+                        ////Update();
                         temporal.Direction = 2;
                         for (int i = 0; i < 30; i++)
                         {
                             temporal.X += 1;
-                            Update();
+                            ////Update();
                             Thread.Sleep(delay);
 
                         }
@@ -263,7 +271,7 @@ namespace ConsoleApp10
                         for (int i = 0; i < 11; i++)
                         {
                             temporal.Y -= 1;
-                            Update();
+                           // //Update();
                             Thread.Sleep(delay);
 
                         }
@@ -271,12 +279,12 @@ namespace ConsoleApp10
                     }
                 case 2:
                     {
-                        Update();
+                        ////Update();
                         temporal.Direction = 2;
                         for (int i = 0; i < 60; i++)
                         {
                             temporal.X += 1;
-                            Update();
+                            ////Update();
                             Thread.Sleep(delay);
 
                         }
@@ -284,7 +292,7 @@ namespace ConsoleApp10
                         for (int i = 0; i < 11; i++)
                         {
                             temporal.Y -= 1;
-                            Update();
+                            //Update();
                             Thread.Sleep(delay);
 
                         }
@@ -292,12 +300,12 @@ namespace ConsoleApp10
                     }
                 case 3:
                     {
-                        Update();
+                        //Update();
                         temporal.Direction = 2;
                         for (int i = 0; i < 90; i++)
                         {
                             temporal.X += 1;
-                            Update();
+                            //Update();
                             Thread.Sleep(delay);
 
                         }
@@ -305,7 +313,7 @@ namespace ConsoleApp10
                         for (int i = 0; i < 11; i++)
                         {
                             temporal.Y -= 1;
-                            Update();
+                            //Update();
                             Thread.Sleep(delay);
 
                         }
@@ -343,9 +351,8 @@ namespace ConsoleApp10
             }
             help.SpawnPos = savepos;
             helper.Add(help);
-            mover.Release();
             Random r = new Random();
-            Thread.Sleep(r.Next(30000, 38000));
+            Thread.Sleep(r.Next(10000, 25000));
             freest[temporal.Assignedstation] = true;
             cars[savepos - 1] = new Car(help.X, help.Y);
             cars[savepos - 1].SpawnPos = savepos;
@@ -356,7 +363,7 @@ namespace ConsoleApp10
                     helper.RemoveAt(i);
                 }
             }
-            Update();
+            //Update();
             sem.Release();
 
 
@@ -376,12 +383,12 @@ namespace ConsoleApp10
             //    Console.WriteLine(item);
             //}
             //Console.ReadLine();
-            Console.BufferHeight = 100;
-            Console.SetWindowSize(120, 42);
+            Console.BufferHeight = 150;
+            Console.SetWindowSize(174, 41);
+            Console.CursorVisible = false;
             
             GasStation mnn = new GasStation();
             Console.WriteLine();
-            Console.CursorVisible = false;
             
 
 
